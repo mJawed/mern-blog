@@ -1,2 +1,2 @@
 # mern-blog
-MERN blog using tailwind css
+MERN blog using tailwind CSS
