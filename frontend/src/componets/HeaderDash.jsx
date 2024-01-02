@@ -1,4 +1,7 @@
 import { useEffect } from "react";
+import { Navbar, NavbarLink } from 'flowbite-react';
+import{Link} from "react-router-dom"
+import { useState } from "react";
 
 function HeaderDash() {
     useEffect(() => {
@@ -7,8 +10,18 @@ function HeaderDash() {
       }, []);
 
 
+
+  const [dropDown, setDropDown] = useState(false)
+
+  const HandleDropDownMenu =() =>{
+setDropDown(!dropDown);
+  }
+
+
+
     return (  
         <>
+       
 <header className="antialiased border-b-2">
   <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
       <div className="flex flex-wrap justify-between items-center">
@@ -20,6 +33,8 @@ function HeaderDash() {
                 <svg className="w-[18px] h-[18px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14"><path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15"/></svg>
                 <span className="sr-only">Toggle sidebar</span>
               </button>
+
+
               <a href="https://flowbite.com" className="flex mr-4">
                 <img src="https://flowbite.s3.amazonaws.com/logo.svg" className="mr-3 h-8" alt="FlowBite Logo" />
                 <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
@@ -175,12 +190,20 @@ function HeaderDash() {
                   </a>
                   </div>
               </div>
-              <button type="button" className="flex mx-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="dropdown">
+              <button onClick={HandleDropDownMenu} type="button" className="flex mx-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="dropdown">
                   <span className="sr-only">Open user menu</span>
                   <img className="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo"/>
               </button>
               {/*-- Dropdown menu -->*/}
-              <div className="hidden z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown">
+              <div className={`${dropDown ? 'inline': "hidden"} z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 `} id="dropdown" 
+              style={
+                {"position": "absolute",
+                "inset": "0px auto auto 0px",
+                "margin": "0px",
+                "transform": "translate3d(1054px, 59px, 0px)"
+            }
+             
+              }>
                   <div className="py-3 px-4">
                       <span className="block text-sm font-semibold text-gray-900 dark:text-white">Neil sims</span>
                       <span className="block text-sm text-gray-500 truncate dark:text-gray-400">name@flowbite.com</span>
