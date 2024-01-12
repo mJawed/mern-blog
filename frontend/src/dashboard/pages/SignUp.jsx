@@ -1,5 +1,5 @@
 import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 
@@ -17,7 +17,14 @@ function SignUp() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-if(!username){
+if(!username || username ===""){
+
+
+    useEffect(()=>{
+        setErrorMessage("User Name is empty");
+	}, [])
+
+
 
 }
 
@@ -46,9 +53,10 @@ if(!username){
             console.log(data);
             if (data.success === false) {
                 console.log("kuch gadabad hai")
+                setErrorMessage(data.message)
             }
 
-            console.log(data.message);
+            //console.log(data.message);
 
 
         } catch (error) {
@@ -77,6 +85,8 @@ if(!username){
                 {/* right */}
 
                 <div className='flex-1'>
+
+                   <div> Error: {errorMessage}</div> 
                     <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
                         <div>
                             <Label value='Your username' />
