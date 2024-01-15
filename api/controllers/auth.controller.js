@@ -48,3 +48,15 @@ res.status(201).json({ message: "User created successfully" });
       next(error)
   }
 }
+
+
+//SignIn API
+
+
+export const signin = async (req,res,next)=>{
+
+const{username,email,password} = req.body
+
+if(!username || !email || password || username){}
+
+}
