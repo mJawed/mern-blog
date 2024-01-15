@@ -4,6 +4,7 @@ import SignUp from "./dashboard/pages/SignUp";
 import About from "./dashboard/pages/About";
 import HeaderDash from "./componets/HeaderDash";
 import Dashboard from './dashboard/pages/Dashboard';
+import FooterDash from './componets/FooterDash';
 
 
 
@@ -26,6 +27,7 @@ function App() {
                 <Route path="signup" element={<SignUp />} />
                 <Route path="about" element={<About />} />
               </Routes>
+              <FooterDash/>
             </>
           }
         />
