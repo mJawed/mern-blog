@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import User from "../models/user.model.js";
-import { errorHandler } from "../utils/error.js"; 
+import { errorHandler } from "../utils/error.js";
 
 import jwt from "jsonwebtoken";
 
@@ -55,34 +55,39 @@ export const signin = async (req, res, next) => {
   try {
     const { username, password } = req.body;
 
-    const userCheck = await User.findOne({ $or: [{ username: username }, { email: username }] });
+    // Input validation (e.g., check for empty strings)
 
-    console.log(userCheck);
+    const userCheck = await User.findOne({
+      $or: [{ username: username }, { email: username }],
+    });
 
     if (userCheck) {
-      const isPasswordValid = await bcrypt.compare(password, userCheck.password);
+      const isPasswordValid = await bcrypt.compare(
+        password,
+        userCheck.password
+      );
 
       if (isPasswordValid) {
         const token = jwt.sign({ id: userCheck._id }, process.env.JWT_SECRET);
 
-        const {password:pass, ...rest} = userCheck._doc
+        const { password: pass, ...rest } = userCheck._doc;
 
-        res.status(200)
-          .cookie('access_token', token, {
+        res
+          .status(200)
+          .cookie("access_token", token, {
             httpOnly: true,
+            secure: true, // Only send cookies over HTTPS
+            // Add other cookie security configurations as needed
           })
-          .json({ message: "User successfully logged in", user: rest});
-
+          .json({ message: "User successfully logged in", user: rest });
       } else {
-        return next(errorHandler(400, "Password did not match"));
+        return next(errorHandler(401, "Invalid username or password"));
       }
     } else {
-      return next(errorHandler(400, "Username not found"));
+      return next(errorHandler(401, "Invalid username or password"));
     }
   } catch (error) {
     console.error(error);
     next(errorHandler(500, "Internal Server Error"));
   }
 };
-
-
