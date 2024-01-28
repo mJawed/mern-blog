@@ -2,14 +2,22 @@ import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import {signInStart, signInSuccess, signInFailur } from "../../redux/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+
+
 function SignIn() {
   const [username, setusername] = useState("");
   const [password, setpassword] = useState("");
   const formDataEntry = { username, password };
 
   const [formData, setFormData] = useState(formDataEntry);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [loading, setLoading] = useState(false);
+  //const [errorMessage, setErrorMessage] = useState(null);
+  //const [loading, setLoading] = useState(false);
+
+  const{loading, error:errorMessage} = useSelector(state => state.user)
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -35,12 +43,16 @@ function SignIn() {
       const errorMessage = `${missingFields.join(", ")} ${
         missingFields.length > 1 ? "are" : "is"
       } mandatory`;
-      return setErrorMessage(errorMessage);
+      //return setErrorMessage(errorMessage);
+      return dispatch(signInFailur(errorMessage))
     }
 
     try {
-      setLoading(true);
-      setErrorMessage(null);
+      //setLoading(true);
+      //setErrorMessage(null);
+
+      dispatch(signInStart());
+
       const res = await fetch("/api/auth/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -52,15 +64,18 @@ function SignIn() {
       //console.log(data);
       if (data.success === false) {
         //console.log("kuch gadabad hai");
-        setErrorMessage(data.message);
+        //setErrorMessage(data.message);
+        dispatch(signInFailur(data.message));
       }
       setLoading(false);
       if (res.ok) {
         navigate("dashboard/signup");
+        dispatch(signInSuccess(data))
       }
     } catch (error) {
-      setErrorMessage(error.message);
-      setLoading(false);
+     // setErrorMessage(error.message);
+     // setLoading(false);
+     dispatch(signInFailur(error.message));
     }
   }
 
